@@ -18,8 +18,6 @@ voices = engine.getProperty("voices")
 #    print(voice.languages)
 #    print(" - " + voice.gender)
 
-    #ellen, fiona, karen, lekha, mei-jia, melina, moira, samantha, ting-ting, veena
-
 engine.setProperty('voice', 'com.apple.speech.synthesis.voice.samantha')
 rate = engine.getProperty('rate')
 engine.setProperty('rate', rate)
@@ -48,7 +46,6 @@ def listenCommand():
 if __name__ == '__main__':
     readCommand("Hello Krishna. How are you doing?")
 
-    greetings = ['hello', 'hi', 'sup', 'hey']
     while True:
         userMode = listenCommand()
         print('cmd : ' + format(userMode))
