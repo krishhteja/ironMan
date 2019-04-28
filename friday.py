@@ -1,8 +1,11 @@
 import speech_recognition as speechRec
 import pyttsx3
-import os
 import itunes as itunes
 import google as google
+import geocoder
+import weather as weather
+import pandas as pd
+
 speech = speechRec.Recognizer()
 try:
     engine = pyttsx3.init()
@@ -75,6 +78,30 @@ if __name__ == '__main__':
             continue
         elif 'Google' in userMode:
             google.open(format(userMode.replace('Google ', '')))
+        elif 'weather' in userMode:
+            location = geocoder.ip('me')
+            current = weather.current(location.city)
+            readCommand(
+                "Currently it's " + current['temp'] + " degrees in " + location.city + ". Today's minimum stands at " +
+                current['minimumTemp'] + " degrees and maximum is " + current['maximumTemp'] + " with a humidity of " +
+                current['humidity'] + " and " + current['description'])
+            continue
+        elif 'forecast' in userMode:
+            location = geocoder.ip('me')
+            current = weather.forecast(location.city)
+            readCommand("It's hard to explain the forecast. I'm drawing it up on the display.")
+            printArr = []
+            for individual in current:
+                temporaryArr = []
+                temporaryArr.append(individual)
+                temporaryArr.append(current[individual]['temp'])
+                temporaryArr.append(current[individual]['minimumTemp'])
+                temporaryArr.append(current[individual]['maximumTemp'])
+                temporaryArr.append(current[individual]['description'])
+                printArr.append(temporaryArr)
+            print(pd.DataFrame(printArr, columns=['Time', 'Temperature', 'Minimum Temperature', 'Maximum Temperature', 'Description']))
+            continue
+
         elif 'bye' in userMode:
             readCommand("Bye Krishna. Will miss you love.")
             exit()

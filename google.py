@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import googleapiclient
 
 def open(command):
     driver = webdriver.Firefox()
