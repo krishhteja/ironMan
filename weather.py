@@ -6,7 +6,7 @@ def current(location):
     response = requests.get(url,
       headers={
         "X-RapidAPI-Host": "community-open-weather-map.p.rapidapi.com",
-        "X-RapidAPI-Key": "USE KEY HERE "
+        "X-RapidAPI-Key": "3c1cac158bmshb8c0f2455bad8edp185757jsnbdd13e702b51"
       }
     )
     data = json.loads(response.text)
@@ -24,7 +24,7 @@ def forecast(location):
     response = requests.get(url,
         headers={
             "X-RapidAPI-Host": "community-open-weather-map.p.rapidapi.com",
-            "X-RapidAPI-Key": "USE KEY HERE "
+            "X-RapidAPI-Key": "3c1cac158bmshb8c0f2455bad8edp185757jsnbdd13e702b51"
         }
     )
     data = json.loads(response.text)
@@ -42,5 +42,3 @@ def forecast(location):
 
 if __name__ == '__main__':
     print("hello! Logs In weather")
-    current = forecast('Lappeenranta')
-    printArr = []

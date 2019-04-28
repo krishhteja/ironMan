@@ -5,6 +5,9 @@ import google as google
 import geocoder
 import weather as weather
 import pandas as pd
+import movie as movie
+import currency as currency
+import sports as sports
 
 speech = speechRec.Recognizer()
 try:
@@ -47,38 +50,51 @@ def listenCommand():
     return voiceText
 
 if __name__ == '__main__':
-    readCommand("Hello Krishna. How are you doing?")
+    readCommand("Hello Boss! Voice command activated.")
 
     while True:
         userMode = listenCommand()
         print('cmd : ' + format(userMode))
-        if 'hello' in userMode:
-            readCommand("Hey love!")
+        if 'hello' in userMode.lower():
+            readCommand("Hey Boss!")
             continue
-        elif 'open' in userMode:
+        elif 'how are you' in userMode.lower():
+            readCommand("Great ... as always!")
+            continue
+        elif 'open' in userMode.lower():
             itunes.open()
             continue
-        elif 'play' in userMode:
+        elif 'play' in userMode.lower():
             itunes.play()
             continue
-        elif 'pause' in userMode:
+        elif 'pause' in userMode.lower():
             itunes.pause()
             continue
-        elif 'next' in userMode:
+        elif 'next' in userMode.lower():
             itunes.nextSong()
             continue
-        elif 'previous' in userMode:
+        elif 'previous' in userMode.lower():
             itunes.previousSong()
             continue
-        elif 'increase' in userMode:
+        elif 'increase' in userMode.lower():
             itunes.volumeUp()
             continue
-        elif 'decrease' in userMode:
+        elif 'decrease' in userMode.lower():
             itunes.volumeDown()
             continue
-        elif 'Google' in userMode:
-            google.open(format(userMode.replace('Google ', '')))
-        elif 'weather' in userMode:
+        elif 'movie' in userMode.lower():
+            movieName = format(userMode).split('movie')[1]
+            info = movie.movieInfo(movieName)
+            if info['response'] == 'success':
+                readCommand("Name of the movie is " + info['title'] + ". It is released on " + info['release'] + " with a run time of " + info['runTime'] + ". It is released in " + info['language'] + ". It's a " + info['genre'] + " movie produced by " + info['production'] + ", directed by " + info['director'] + ", and played by " + info['actors'] + ". The main plot is " + info['plot'])
+                if info['rating'] == 'N/A':
+                    readCommand("It's rating is not provided")
+                else:
+                    readCommand("It has a rating of " + info['imdbrating'] + " rated by " + info['votes'] + " people")
+        elif 'google' in userMode.lower():
+            movieName = format(userMode).lower().split('google')[1]
+            google.open(movieName)
+        elif 'weather' in userMode.lower():
             location = geocoder.ip('me')
             current = weather.current(location.city)
             readCommand(
@@ -86,7 +102,35 @@ if __name__ == '__main__':
                 current['minimumTemp'] + " degrees and maximum is " + current['maximumTemp'] + " with a humidity of " +
                 current['humidity'] + " and " + current['description'])
             continue
-        elif 'forecast' in userMode:
+        if 'convert' in userMode.lower():
+            splitData = format(userMode).split('convert')[1]
+            fromCurrency = splitData.split('to')[0]
+            toCurrency = splitData.split('to')[1]
+            conversion = currency.convert(fromCurrency, toCurrency)
+            readCommand("Converting " + conversion['fromCurrency'] + " to " + conversion['toCurrency'] + " is currently at " + conversion['exchange'])
+        elif 'perfect' in userMode.lower():
+            readCommand("As always!")
+            continue
+        elif 'cricket' in userMode.lower():
+            scores = sports.cricketMatches()
+            if len(scores) > 0:
+                for score in scores:
+                    readCommand("Match between " + score['between'] + " is happening at " + score['location'] + ". As part of series " + score['series'] + ". The current status is " + score['status'] + " and " + score['score'])
+            else:
+                readCommand("Currently I see no live matches being played")
+            continue
+        elif 'football' in userMode.lower():
+            scores = sports.currentFootballMatches()
+            if scores['status'] == 'true':
+                readCommand("The current match is between " + scores['between'] + ". " + scores['scores'])
+                if scores['homeScores'] != '':
+                    readCommand(scores['homeScorers'])
+                if scores['awayScorers'] != '':
+                    readCommand(scores['awayScorers'])
+                readCommand("Statistics of the match are " + scores['statistics'])
+            else:
+                readCommand("Currently I see no live matches being played")
+        elif 'forecast' in userMode.lower():
             location = geocoder.ip('me')
             current = weather.forecast(location.city)
             readCommand("It's hard to explain the forecast. I'm drawing it up on the display.")
@@ -102,6 +146,6 @@ if __name__ == '__main__':
             print(pd.DataFrame(printArr, columns=['Time', 'Temperature', 'Minimum Temperature', 'Maximum Temperature', 'Description']))
             continue
 
-        elif 'bye' in userMode:
-            readCommand("Bye Krishna. Will miss you love.")
+        elif 'bye' in userMode.lower():
+            readCommand("Bye Boss!")
             exit()
