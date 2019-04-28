@@ -6,7 +6,7 @@ def current(location):
     response = requests.get(url,
       headers={
         "X-RapidAPI-Host": "community-open-weather-map.p.rapidapi.com",
-        "X-RapidAPI-Key": "USE KEY HERE"
+        "X-RapidAPI-Key": "USE KEY HERE "
       }
     )
     data = json.loads(response.text)
@@ -24,7 +24,7 @@ def forecast(location):
     response = requests.get(url,
         headers={
             "X-RapidAPI-Host": "community-open-weather-map.p.rapidapi.com",
-            "X-RapidAPI-Key": "USE KEY HERE"
+            "X-RapidAPI-Key": "USE KEY HERE "
         }
     )
     data = json.loads(response.text)
