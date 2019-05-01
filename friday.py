@@ -1,3 +1,4 @@
+import os
 import speech_recognition as speechRec
 import pyttsx3
 import itunes as itunes
@@ -8,7 +9,17 @@ import pandas as pd
 import movie as movie
 import currency as currency
 import sports as sports
+import translate as translate
+from chatterbot import ChatBot
+from chatterbot.trainers import ListTrainer
 
+'''bot = ChatBot('Charlie')
+trainer = ListTrainer(bot)
+
+for files in os.listdir('/Users/krishnavaddepalli/PycharmProjects/IronMan/chatterbot-corpus-master/chatterbot_corpus/data/english'):
+    data = open('/Users/krishnavaddepalli/PycharmProjects/IronMan/chatterbot-corpus-master/chatterbot_corpus/data/english/'+files, 'r').readlines()
+    trainer.train(data)
+'''
 speech = speechRec.Recognizer()
 try:
     engine = pyttsx3.init()
@@ -106,8 +117,18 @@ if __name__ == '__main__':
             splitData = format(userMode).split('convert')[1]
             fromCurrency = splitData.split('to')[0]
             toCurrency = splitData.split('to')[1]
-            conversion = currency.convert(fromCurrency, toCurrency)
-            readCommand("Converting " + conversion['fromCurrency'] + " to " + conversion['toCurrency'] + " is currently at " + conversion['exchange'])
+            conversion = currency.convert(fromCurrency.strip(), toCurrency.strip())
+            if conversion['status'] == 'success':
+                readCommand("Converting {} to {} is currently at {}".format(str(conversion['fromCurrency']), str(conversion['toCurrency']), str(conversion['exchange'])))
+            else:
+                readCommand("Currency not found!")
+        if 'translate' in userMode.lower():
+            splitData = format(userMode).split('translate')[1]
+            word = splitData.split('to')[0]
+            toLanguage = splitData.split('to')[1].strip()
+            print(word, toLanguage.strip())
+            tarjuma = translate.translation(word, toLanguage.strip())
+            readCommand(tarjuma)
         elif 'perfect' in userMode.lower():
             readCommand("As always!")
             continue
@@ -149,3 +170,6 @@ if __name__ == '__main__':
         elif 'bye' in userMode.lower():
             readCommand("Bye Boss!")
             exit()
+#        else:
+#            print("abc")
+            #bot.get_response(userMode)
