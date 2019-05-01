@@ -20,11 +20,9 @@ def convert(fromCurrency, to):
     return map
 
 def list(countryName):
-    print(countryName)
     url = "https://free.currconv.com/api/v7/currencies?apiKey=a5504e19bdf18346c7dc"
     response = requests.get(url)
     data = json.loads(response.text)
-    print(data)
     countries = data['results']
     for country in countries:
         currency = countries[country]['currencyName']

@@ -10,16 +10,7 @@ import movie as movie
 import currency as currency
 import sports as sports
 import translate as translate
-from chatterbot import ChatBot
-from chatterbot.trainers import ListTrainer
 
-'''bot = ChatBot('Charlie')
-trainer = ListTrainer(bot)
-
-for files in os.listdir('/Users/krishnavaddepalli/PycharmProjects/IronMan/chatterbot-corpus-master/chatterbot_corpus/data/english'):
-    data = open('/Users/krishnavaddepalli/PycharmProjects/IronMan/chatterbot-corpus-master/chatterbot_corpus/data/english/'+files, 'r').readlines()
-    trainer.train(data)
-'''
 speech = speechRec.Recognizer()
 try:
     engine = pyttsx3.init()
@@ -103,8 +94,24 @@ if __name__ == '__main__':
                 else:
                     readCommand("It has a rating of " + info['imdbrating'] + " rated by " + info['votes'] + " people")
         elif 'google' in userMode.lower():
-            movieName = format(userMode).lower().split('google')[1]
-            google.open(movieName)
+            searchTerm = format(userMode).lower().split('google')[1]
+            google.open(searchTerm)
+        elif 'image' in userMode.lower():
+            searchTerm = format(userMode).lower().split('images')[1]
+            if 'of' in searchTerm:
+                searchTerm = searchTerm.replace('of', '')
+            if 'in' in searchTerm:
+                searchTerm = searchTerm.replace('in', '')
+            google.image(searchTerm)
+        elif 'youtube' in userMode.lower():
+            searchTerm = format(userMode).lower().split('youtube')[1]
+            if 'of' in searchTerm:
+                searchTerm = searchTerm.replace('of', '')
+            if 'in' in searchTerm:
+                searchTerm = searchTerm.replace('in', '')
+            if 'for' in searchTerm:
+                searchTerm = searchTerm.replace('for', '')
+            google.youtube(searchTerm)
         elif 'weather' in userMode.lower():
             location = geocoder.ip('me')
             current = weather.current(location.city)
@@ -166,10 +173,8 @@ if __name__ == '__main__':
                 printArr.append(temporaryArr)
             print(pd.DataFrame(printArr, columns=['Time', 'Temperature', 'Minimum Temperature', 'Maximum Temperature', 'Description']))
             continue
-
         elif 'bye' in userMode.lower():
             readCommand("Bye Boss!")
             exit()
-#        else:
-#            print("abc")
-            #bot.get_response(userMode)
+        elif 'who is' in userMode.lower():
+            readCommand(google.whoIs(userMode))
