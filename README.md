@@ -10,4 +10,4 @@ Though there are google APIs for search, I thought doing it via selenium would b
 
 Decided to use APIs from different sources and populate more data. Hope will keep expanding this project to more domains.
 
-Total time spent as of this commit - 9 hours 34 min
+Total time spent as of this commit - 10 hours 42 min
