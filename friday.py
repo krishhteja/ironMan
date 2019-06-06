@@ -10,6 +10,9 @@ import movie as movie
 import currency as currency
 import sports as sports
 import translate as translate
+from chatterbot.trainers import ListTrainer
+from chatterbot import ChatBot
+
 
 speech = speechRec.Recognizer()
 try:
@@ -29,6 +32,17 @@ voices = engine.getProperty("voices")
 engine.setProperty('voice', 'com.apple.speech.synthesis.voice.samantha')
 rate = engine.getProperty('rate')
 engine.setProperty('rate', rate)
+
+bot = ChatBot('Jarvis')
+trainer = ListTrainer(bot)
+try:
+    with open('db.sqlite3', 'r') as check:
+        print("File exists")
+except:
+    for file in os.listdir('PATH_OF_CORPUS_DATA_UPTO_DIRECTORY'):
+        conv = open('PATH_OF_CORPUS_DATA_UPTO_DIRECTORY/' + file, 'r').readlines()
+        trainer.train(conv)
+
 
 def readCommand(cmd):
     engine.say(cmd)
@@ -178,3 +192,6 @@ if __name__ == '__main__':
             exit()
         elif 'who is' in userMode.lower():
             readCommand(google.whoIs(userMode))
+        else:
+            response = bot.get_response(userMode)
+            readCommand(str(response))
