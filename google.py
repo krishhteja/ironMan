@@ -6,7 +6,7 @@ def open(command):
     driver = webdriver.Firefox()
     print("Opening firefox")
     driver.get("https://www.google.com")
-    inputElement = driver.find_element_by_name('q')
+    inputElement = driver.find_element("name", 'q')
     inputElement.send_keys(command)
     inputElement.send_keys(Keys.ENTER)
 
@@ -14,7 +14,7 @@ def image(command):
     driver = webdriver.Firefox()
     print("Opening firefox")
     driver.get("https://www.images.google.com")
-    inputElement = driver.find_element_by_name('q')
+    inputElement = driver.find_element("name", 'q')
     inputElement.send_keys(command)
     inputElement.send_keys(Keys.ENTER)
 
@@ -22,7 +22,7 @@ def youtube(command):
     driver = webdriver.Firefox()
     print("Opening firefox")
     driver.get("https://www.youtube.com")
-    inputElement = driver.find_element_by_name('search_query')
+    inputElement = driver.find_element("name", "search_query")
     inputElement.send_keys(command)
     inputElement.send_keys(Keys.ENTER)
 

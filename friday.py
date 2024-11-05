@@ -10,8 +10,7 @@ import movie as movie
 import currency as currency
 import sports as sports
 import translate as translate
-from chatterbot.trainers import ListTrainer
-from chatterbot import ChatBot
+import pyaudio
 
 
 speech = speechRec.Recognizer()
@@ -24,10 +23,10 @@ except RuntimeError:
 
 voices = engine.getProperty("voices")
 
-#for voice in voices:
-#    print(voice.id)
-#    print(voice.languages)
-#    print(" - " + voice.gender)
+for voice in voices:
+    print(voice.id)
+    print(voice.languages)
+    print(" - " + voice.gender)
 
 engine.setProperty('voice', 'com.apple.speech.synthesis.voice.samantha')
 rate = engine.getProperty('rate')
@@ -63,6 +62,8 @@ def listenCommand():
     except speechRec.RequestError as reqErr:
         readCommand("Error with network")
         print("Network error")
+    except:
+        print('Unknown error', error)
     return voiceText
 
 if __name__ == '__main__':
@@ -192,6 +193,8 @@ if __name__ == '__main__':
             exit()
         elif 'who is' in userMode.lower():
             readCommand(google.whoIs(userMode))
+        # elif 'boring work' in userMode.lower():
+        #     readCommand("Sure thing. Will start the job now!")
         else:
-            response = bot.get_response(userMode)
-            readCommand(str(response))
+            response = 'Not sure I understand what you mean' # bot.get_response(userMode)
+            readCommand(response)
