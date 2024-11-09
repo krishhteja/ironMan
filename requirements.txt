@@ -10,3 +10,4 @@ setuptools==54.0.0
 distutils-extra==2.39
 spacy==3.7.4
 pyaudio==0.2.14
+pyChatGPT==0.4.3.3
